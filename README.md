@@ -1,24 +1,53 @@
-# Flowmind OpenClaw Skill
+# Flowmind skill and Claude Code plugin
 
-OpenClaw skill for **Flowmind**: log time, check streak/XP stats, list projects, and view weekly summaries.
+[Flowmind](https://www.flowmind.pro/) is a work log for solo builders who ship with AI coding agents. This repository holds the Flowmind agent skill.
 
-## Files
+With the skill, your coding agent can set up Flowmind, link your repositories to Flowmind projects, and stage each finished piece of work with a one-line outcome and the link that proves it. Nothing enters your record until you approve it in Flowmind.
 
-- `SKILL.md` — instructions agents follow to use Flowmind via CLI/API
-- `package.json` — package metadata for ClawHub publishing
+## Install
 
-## Install / Use
+### Claude Code plugin
 
-1. Ensure Flowmind CLI is installed:
-   ```bash
-   npm install -g flowmind-cli
-   ```
-2. Authenticate:
-   ```bash
-   fm auth login
-   ```
-3. Place/import this skill folder in your OpenClaw skills environment (or publish via ClawHub).
+```sh
+claude plugin marketplace add afgonullu/flowmind-skill
+claude plugin install flowmind@flowmind
+```
 
-## Flowmind
+In a Claude Code session, `/plugin marketplace add afgonullu/flowmind-skill` does the same.
 
-- Product: https://www.flowmind.pro/
+### Any agent that reads skills
+
+```sh
+npx skills add afgonullu/flowmind-skill
+```
+
+### Record agent time in Codex and Claude Code
+
+The skill works with the Flowmind CLI. The CLI also installs session hooks that record how long each agent turn runs:
+
+```sh
+npm install -g @flowmind/cli
+flowmind auth login
+flowmind hooks install
+```
+
+`flowmind hooks install` copies the same skill to Codex (`~/.agents/skills`) and Claude Code (`~/.claude/skills`). If you also installed the plugin, Claude Code has two identical copies. That does no harm. Codex runs new hooks only after you trust them once in `/hooks`.
+
+### OpenClaw
+
+Import the `plugins/flowmind/skills/flowmind` folder into your OpenClaw skills. OpenClaw has no hooks, so your agent stages each session with the start time and minutes it observed.
+
+## Start
+
+Ask your agent: "Set up Flowmind." The skill has your agent find your repositories, propose a list of Flowmind projects, and create and link them only after you approve the list.
+
+## Links
+
+- [How Flowmind works with Codex and Claude Code](https://www.flowmind.pro/agents)
+- [Frequently asked questions](https://www.flowmind.pro/faq)
+- [@flowmind/cli on npm](https://www.npmjs.com/package/@flowmind/cli)
+- [Privacy policy](https://www.flowmind.pro/privacy)
+
+## Versions
+
+The Flowmind product repository is the source of this skill. It is published here with each `@flowmind/cli` release, and the plugin version matches the CLI version.

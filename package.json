@@ -1,6 +1,0 @@
-{
-  "name": "flowmind",
-  "version": "0.1.0",
-  "description": "Log time, check stats, and manage projects on Flowmind from your AI agent",
-  "keywords": ["flowmind", "time-tracking", "productivity", "hours"]
-}

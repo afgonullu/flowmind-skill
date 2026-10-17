@@ -1,0 +1,16 @@
+{
+  "name": "flowmind",
+  "metadata": {
+    "description": "Flowmind for Claude Code: set up Flowmind and stage your agent's finished work for your approval."
+  },
+  "owner": {
+    "name": "Flowmind"
+  },
+  "plugins": [
+    {
+      "name": "flowmind",
+      "source": "./plugins/flowmind",
+      "description": "Your coding agent links your repositories to Flowmind projects and stages each finished piece of work, with the outcome and the link that proves it, for your approval."
+    }
+  ]
+}

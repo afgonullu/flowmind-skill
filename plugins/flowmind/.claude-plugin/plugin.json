@@ -1,0 +1,24 @@
+{
+  "name": "flowmind",
+  "version": "0.3.0",
+  "description": "Flowmind agent skill: your coding agent links your projects and stages its finished work, with the outcome and the link that proves it, for your approval.",
+  "author": {
+    "name": "Flowmind",
+    "url": "https://www.flowmind.pro"
+  },
+  "homepage": "https://www.flowmind.pro/agents",
+  "repository": "https://github.com/afgonullu/flowmind-skill",
+  "keywords": [
+    "flowmind",
+    "agent-skill",
+    "ai-agents",
+    "coding-agents",
+    "codex",
+    "claude-code",
+    "openclaw",
+    "work-log",
+    "time-tracking",
+    "productivity",
+    "developer-tools"
+  ]
+}
