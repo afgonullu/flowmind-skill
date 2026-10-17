@@ -31,7 +31,7 @@ flowmind auth login
 flowmind hooks install
 ```
 
-`flowmind hooks install` copies the same skill to Codex (`~/.agents/skills`) and Claude Code (`~/.claude/skills`). If you also installed the plugin, Claude Code has two identical copies. That does no harm. Codex runs new hooks only after you trust them once in `/hooks`.
+`flowmind hooks install` copies the same skill to Codex (`~/.agents/skills`). In Claude Code, from `@flowmind/cli` 0.3.2, it detects this plugin when it is installed and enabled, and leaves the skill to it, so the skill loads once. It still adds the hooks. Codex runs new hooks only after you trust them once in `/hooks`.
 
 ### OpenClaw
 
