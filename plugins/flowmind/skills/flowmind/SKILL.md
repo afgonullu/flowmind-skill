@@ -49,7 +49,7 @@ To find gaps across the user's folders, run `flowmind link --scan <dir...>`. It 
 In a linked repository, the session hooks record how long the main agent's turns run. When you finish a material unit of work, such as a feature, fix, investigation, or document, stage it before you start the next one. Do not stage every turn.
 
 ```bash
-flowmind agent stage --intention "<what you set out to do>" --outcome "<what changed or shipped>" --artifact-url <commit, PR, or document URL> --json
+flowmind agent stage --intention "<what you set out to do>" --outcome "<one line: what changed>" --detail "<proof or open item>" --artifact-url <commit, PR, or document URL> --json
 ```
 
 - The CLI reads the project from `.flowmind.json` and the time from the session record. The time is the main agent's turn time on the awake clock that Codex uses for "Worked for", so sleep does not count. It includes the time that subagents work during the turn.
@@ -60,9 +60,36 @@ flowmind agent stage --intention "<what you set out to do>" --outcome "<what cha
 - After 20 minutes of unstaged agent time, each prompt in a linked repository carries a reminder with the unstaged minutes. Stage when the current unit of work is complete; a stage with explicit times also resets the count.
 - Add `--dry-run` to preview the project and minutes without staging.
 - Pass `--project`, `--minutes`, and `--started-at` only when no session record exists. Use observed times only. Never estimate time from tokens or tool calls.
-- Write the intention and the outcome as one short sentence each. Never paste transcripts, terminal output, commit messages, issue titles, emails, or secrets.
 - Share `proposal.webReviewUrl` with the user. The user approves staged work in Flowmind Activity; **Approve all with links** approves every item with an artifact link at once. Approved agent time counts on the project, not as the user's personal effort or XP.
 - If staging fails, report the error. Never fall back to `flowmind log`, and never approve your own proposals.
+
+### Write the proof for a person
+
+The user reads many proofs at once, often on a dashboard. Keep each one short:
+
+- `--intention`: what you set out to do, in one short sentence.
+- `--outcome`: one line of at most 120 characters that says what changed for the project or its users. Lead with the result, not the method.
+- `--detail`: optional, at most 3, each one line of at most 100 characters. Use details for proof (cause, check, version) and for anything still open ("Still needs: ..."). Repeat the flag for each detail.
+- Put the commit, PR, or document in `--artifact-url`, not in the text.
+- Never paste transcripts, terminal output, commit messages, issue titles, emails, or secrets.
+
+The CLI and the API reject a proof that breaks these limits and say what to change. Shorten the text and stage again.
+
+Good:
+
+```bash
+flowmind agent stage --intention "Fix CLI sign-in for signed-out users" \
+  --outcome "Signed-out CLI sign-in now returns to Authorize CLI" \
+  --detail "Cause: production Supabase rejected the www callbacks" \
+  --detail "Still needs: Supabase URL settings and deploy approval" \
+  --artifact-url https://github.com/<owner>/<repo>/commit/<sha> --json
+```
+
+Rejected, because the outcome is a paragraph:
+
+```text
+--outcome "Found that production Supabase rejects every www sign-in callback and falls back to the apex domain, so Google and GitHub sign-in land on the home page signed out. Changed the web app so a signed-out CLI link goes to /login ..."
+```
 
 ## Log the user's own work
 
