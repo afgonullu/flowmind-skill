@@ -46,13 +46,17 @@ To find gaps across the user's folders, run `flowmind link --scan <dir...>`. It 
 
 ## Log agent work
 
-In a linked repository, the session hooks record how long each agent turn runs. When you finish a material unit of work, such as a feature, fix, investigation, or document, stage it. Do not stage every turn.
+In a linked repository, the session hooks record how long the main agent's turns run. When you finish a material unit of work, such as a feature, fix, investigation, or document, stage it before you start the next one. Do not stage every turn.
 
 ```bash
 flowmind agent stage --intention "<what you set out to do>" --outcome "<what changed or shipped>" --artifact-url <commit, PR, or document URL> --json
 ```
 
-- The CLI reads the project from `.flowmind.json` and the time from the session record. A second stage in the same session covers only the time after the first.
+- The CLI reads the project from `.flowmind.json` and the time from the session record. The time is the main agent's turn time on the awake clock that Codex uses for "Worked for", so sleep does not count. It includes the time that subagents work during the turn.
+- A stage covers the whole minutes since the session's last proof. The remaining seconds carry over to the next proof.
+- When several units of work finish together, stage them as one proof that names them all. A second stage right after the first has no new time.
+- Subagents do not stage. In a Codex subagent, `flowmind agent stage` stages nothing and tells the subagent to report its outcome to the main agent.
+- `"staged": false` in the JSON output means that nothing was staged, and it is not an error. `reason` is `no-new-time` when the last proof (`lastProposalId`) already holds the session's time, or `subagent`. Tell the user which proof covers the work.
 - After 20 minutes of unstaged agent time, each prompt in a linked repository carries a reminder with the unstaged minutes. Stage when the current unit of work is complete; a stage with explicit times also resets the count.
 - Add `--dry-run` to preview the project and minutes without staging.
 - Pass `--project`, `--minutes`, and `--started-at` only when no session record exists. Use observed times only. Never estimate time from tokens or tool calls.

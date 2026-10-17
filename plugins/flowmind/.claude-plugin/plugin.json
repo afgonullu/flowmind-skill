@@ -1,6 +1,6 @@
 {
   "name": "flowmind",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "Flowmind agent skill: your coding agent links your projects and stages its finished work, with the outcome and the link that proves it, for your approval.",
   "author": {
     "name": "Flowmind",
