@@ -8,6 +8,7 @@
   },
   "homepage": "https://www.flowmind.pro/agents",
   "repository": "https://github.com/afgonullu/flowmind-skill",
+  "license": "MIT",
   "keywords": [
     "flowmind",
     "agent-skill",

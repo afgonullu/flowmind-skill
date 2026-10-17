@@ -51,3 +51,7 @@ Ask your agent: "Set up Flowmind." The skill has your agent find your repositori
 ## Versions
 
 The Flowmind product repository is the source of this skill. It is published here with each `@flowmind/cli` release, and the plugin version matches the CLI version.
+
+## License
+
+MIT. See [LICENSE](LICENSE).
