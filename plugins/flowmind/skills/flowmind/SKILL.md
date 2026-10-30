@@ -53,15 +53,19 @@ flowmind agent stage --intention "<what you set out to do>" --outcome "<one line
 ```
 
 - The CLI reads the project from `.flowmind.json` and the time from the session record. The time is the main agent's turn time on the awake clock that Codex uses for "Worked for", so sleep does not count. It includes the time that subagents work during the turn.
+- A turn that another chat starts, for example with `send_message_to_thread` or `create_thread`, counts like a typed turn. Codex runs no prompt hook for it, so the CLI reads its start from the Codex session file.
 - A stage covers the whole minutes since the session's last proof. The remaining seconds carry over to the next proof.
 - When several units of work finish together, stage them as one proof that names them all. A second stage right after the first has no new time.
 - Subagents do not stage. In a Codex subagent, `flowmind agent stage` stages nothing and tells the subagent to report its outcome to the main agent.
 - `"staged": false` in the JSON output means that nothing was staged, and it is not an error. `reason` is `no-new-time` when the last proof (`lastProposalId`) already holds the session's time, or `subagent`. Tell the user which proof covers the work.
+- `"reason": "saved"` means that the server did not take the proof yet, for example because Flowmind was unreachable, a limit was reached, or its answer could not be read. The CLI saved it on this machine and sends it automatically: after the next accepted stage, or in the background from the session hooks. Its time already counts as staged. Do not stage it again, do not invent another `--idempotency-key`, and tell the user it waits to be sent.
+- A refused credential also keeps the proof saved, but exits with an error: the user must run `flowmind auth login`. A proof that the server refuses for its content (too long, unknown project) is not saved; fix it and stage again.
+- `flowmind agent pending --json` lists the proofs saved on this machine; `flowmind agent retry --json` sends them now.
 - After 20 minutes of unstaged agent time, each prompt in a linked repository carries a reminder with the unstaged minutes. Stage when the current unit of work is complete; a stage with explicit times also resets the count.
 - Add `--dry-run` to preview the project and minutes without staging.
 - Pass `--project`, `--minutes`, and `--started-at` only when no session record exists. Use observed times only. Never estimate time from tokens or tool calls.
 - Share `proposal.webReviewUrl` with the user. The user approves staged work in Flowmind Activity; **Approve all with links** approves every item with an artifact link at once. Approved agent time counts on the project, not as the user's personal effort or XP.
-- If staging fails, report the error. Never fall back to `flowmind log`, and never approve your own proposals.
+- If staging fails with an error, report it. Never fall back to `flowmind log`, and never approve your own proposals.
 
 ### Write the proof for a person
 
